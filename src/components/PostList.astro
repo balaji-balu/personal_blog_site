@@ -1,0 +1,21 @@
+---
+import { formatDate, urlOf, type Post } from '../lib/posts';
+import Tags from './Tags.astro';
+
+interface Props { posts: Post[]; }
+const { posts } = Astro.props;
+---
+{posts.length === 0 ? (
+  <p class="muted">No posts yet.</p>
+) : (
+  <ul class="post-list">
+    {posts.map((post) => (
+      <li>
+        <a class="title" href={urlOf(post)}>{post.data.title}</a>
+        <div class="ui muted"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time></div>
+        <p>{post.data.description}</p>
+        <Tags tags={post.data.tags} />
+      </li>
+    ))}
+  </ul>
+)}

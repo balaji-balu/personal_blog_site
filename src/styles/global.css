@@ -1,0 +1,128 @@
+@import '@fontsource-variable/source-serif-4/opsz.css';
+@import '@fontsource-variable/source-serif-4/opsz-italic.css';
+/* Tamil: only downloaded when a page actually contains Tamil characters (unicode-range). */
+@import '@fontsource-variable/noto-sans-tamil/index.css';
+
+:root {
+  --font-body: 'Source Serif 4 Variable', 'Noto Sans Tamil Variable', 'Noto Serif', Georgia, serif;
+  --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Tamil Variable', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
+
+  --bg: #fdfcf9;
+  --fg: #1d1d1b;
+  --muted: #62625d;
+  --rule: #e4e2da;
+  --accent: #8a3b12;
+  --code-bg: #f3f1ea;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #16161a;
+  --fg: #e6e4de;
+  --muted: #9d9b94;
+  --rule: #2e2e34;
+  --accent: #f0a46c;
+  --code-bg: #1f1f25;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #16161a;
+    --fg: #e6e4de;
+    --muted: #9d9b94;
+    --rule: #2e2e34;
+    --accent: #f0a46c;
+    --code-bg: #1f1f25;
+    color-scheme: dark;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: clamp(1.0625rem, 0.98rem + 0.35vw, 1.1875rem);
+  line-height: 1.7;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  /* Never auto-hyphenate transliterated Sanskrit. */
+  hyphens: manual;
+  overflow-wrap: break-word;
+}
+
+.wrap { max-width: 42rem; margin: 0 auto; padding: 0 1rem; }
+
+a { color: var(--accent); text-underline-offset: 0.15em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+
+h1, h2, h3, h4 { line-height: 1.25; font-weight: 650; margin: 2em 0 0.6em; text-wrap: balance; }
+h1 { font-size: 2.1em; margin-top: 0.5em; letter-spacing: -0.01em; }
+h2 { font-size: 1.45em; }
+h3 { font-size: 1.2em; }
+p, ul, ol, blockquote, pre, figure, table { margin: 0 0 1.2em; }
+p { text-wrap: pretty; }
+
+blockquote { margin-left: 0; padding-left: 1em; border-left: 3px solid var(--rule); color: var(--muted); font-style: italic; }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 2.5em 0; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+
+code, pre { font-family: var(--font-mono); font-size: 0.86em; }
+:not(pre) > code { background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 3px; }
+pre { padding: 1em; overflow-x: auto; border-radius: 6px; line-height: 1.5; background: var(--code-bg); }
+
+/* Shiki dual themes */
+.astro-code, .astro-code span { background-color: var(--code-bg) !important; }
+:root[data-theme='dark'] .astro-code, :root[data-theme='dark'] .astro-code span { color: var(--shiki-dark) !important; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .astro-code,
+  :root:not([data-theme='light']) .astro-code span { color: var(--shiki-dark) !important; }
+}
+
+table { border-collapse: collapse; width: 100%; font-size: 0.92em; display: block; overflow-x: auto; }
+th, td { border-bottom: 1px solid var(--rule); padding: 0.4em 0.6em; text-align: left; }
+
+/* Mark Tamil passages with lang="ta" for a taller line box. */
+:lang(ta) { font-family: 'Noto Sans Tamil Variable', var(--font-body); line-height: 1.85; }
+
+.muted { color: var(--muted); }
+.ui { font-family: var(--font-ui); font-size: 0.9rem; }
+
+/* Header / footer */
+.site-header { border-bottom: 1px solid var(--rule); margin-bottom: 2rem; }
+.site-header .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; padding-top: 1rem; padding-bottom: 1rem; }
+.site-header .brand { font-weight: 700; color: var(--fg); text-decoration: none; margin-right: auto; }
+.site-header nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+.site-header nav a { color: var(--muted); text-decoration: none; }
+.site-header nav a:hover, .site-header nav a[aria-current='page'] { color: var(--fg); }
+.theme-toggle { background: none; border: 1px solid var(--rule); color: var(--muted); border-radius: 999px; padding: 0.15rem 0.6rem; cursor: pointer; font: inherit; }
+.site-footer { border-top: 1px solid var(--rule); margin-top: 4rem; padding: 1.5rem 0 3rem; }
+
+/* Post lists */
+.post-list { list-style: none; padding: 0; }
+.post-list li { margin: 0 0 1.4em; }
+.post-list .title { font-size: 1.1em; font-weight: 600; }
+.post-list p { margin: 0.15em 0 0.3em; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.4em; padding: 0; margin: 0; list-style: none; }
+.tags a { font-family: var(--font-ui); font-size: 0.8rem; color: var(--muted); text-decoration: none; border: 1px solid var(--rule); border-radius: 999px; padding: 0.05em 0.6em; }
+.tags a:hover { color: var(--fg); }
+
+.areas { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; margin: 1.5rem 0 2.5rem; }
+.areas a { display: block; padding: 1rem 1.2rem; border: 1px solid var(--rule); border-radius: 8px; text-decoration: none; color: var(--fg); }
+.areas a:hover { border-color: var(--accent); }
+.areas strong { display: block; font-size: 1.15em; }
+
+.post-header { margin-bottom: 2rem; }
+.post-header .meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
+.post-hero { margin: 0 0 2rem; }

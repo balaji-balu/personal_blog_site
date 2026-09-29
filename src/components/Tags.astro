@@ -1,0 +1,9 @@
+---
+interface Props { tags: readonly string[]; }
+const { tags } = Astro.props;
+---
+{tags.length > 0 && (
+  <ul class="tags">
+    {tags.map((t) => <li><a href={`/tags/${t}`}>#{t}</a></li>)}
+  </ul>
+)}

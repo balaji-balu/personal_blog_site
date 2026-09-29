@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Tags from '../components/Tags.astro';
+import { SECTIONS } from '../consts';
+import { formatDate, getPosts, sectionOf, topicOf, type Post } from '../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: Post };
+const { Content } = await render(post);
+const section = sectionOf(post);
+const { title, description, date, tags, image } = post.data;
+---
+<Base title={title} description={description}>
+  <article>
+    <header class="post-header">
+      <p class="ui muted">
+        <a href={`/${section}`}>{SECTIONS[section].title}</a> / <a href={`/${section}#${topicOf(post)}`}>{topicOf(post)}</a>
+      </p>
+      <h1>{title}</h1>
+      <div class="meta ui muted">
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        <Tags tags={tags} />
+      </div>
+    </header>
+    {image && (
+      <figure class="post-hero">
+        <Image src={image} alt="" widths={[672, 1344]} sizes="(max-width: 42rem) 100vw, 42rem" />
+      </figure>
+    )}
+    <Content />
+  </article>
+</Base>

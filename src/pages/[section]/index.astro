@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { SECTIONS, SECTION_KEYS, type Section } from '../../consts';
+import { getPosts, topicOf } from '../../lib/posts';
+
+export function getStaticPaths() {
+  return SECTION_KEYS.map((section) => ({ params: { section } }));
+}
+
+const section = Astro.params.section as Section;
+const { title, blurb } = SECTIONS[section];
+const posts = await getPosts(section);
+
+// Group by topic folder, topics ordered by their most recent post.
+const topics = new Map<string, typeof posts>();
+for (const p of posts) {
+  const t = topicOf(p);
+  topics.set(t, [...(topics.get(t) ?? []), p]);
+}
+---
+<Base title={title} description={blurb}>
+  <h1>{title}</h1>
+  <p class="muted">{blurb}</p>
+  {topics.size === 0 && <p class="muted">No posts yet.</p>}
+  {[...topics].map(([topic, list]) => (
+    <section>
+      <h2 id={topic}>{topic}</h2>
+      <PostList posts={list} />
+    </section>
+  ))}
+</Base>
